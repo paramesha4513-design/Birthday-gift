@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎂</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    overflow:hidden;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff5f9e,#ff9a9e,#fad0c4,#fbc2eb);
+    background-size:400% 400%;
+    animation:bg 10s infinite alternate;
+}
+
+@keyframes bg{
+0%{background-position:left;}
+100%{background-position:right;}
+}
+
+.container{
+    position:relative;
+    z-index:5;
+    text-align:center;
+    color:white;
+    padding:20px;
+}
+
+h1{
+    font-size:55px;
+    text-shadow:0 0 15px white;
+    animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+from{
+text-shadow:0 0 10px white;
+}
+to{
+text-shadow:0 0 30px yellow,0 0 50px white;
+}
+}
+
+.name{
+    color:#fff700;
+}
+
+.message{
+    margin-top:20px;
+    font-size:22px;
+    line-height:1.6;
+}
+
+.cake{
+    font-size:90px;
+    margin:25px 0;
+    animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+}
+
+button{
+    margin-top:30px;
+    padding:15px 30px;
+    font-size:20px;
+    border:none;
+    border-radius:40px;
+    background:white;
+    color:#ff4081;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+
+.balloon{
+position:absolute;
+bottom:-150px;
+width:70px;
+height:90px;
+border-radius:50%;
+animation:float 12s linear infinite;
+opacity:.8;
+}
+
+.balloon:before{
+content:'';
+position:absolute;
+width:2px;
+height:80px;
+background:white;
+left:34px;
+top:90px;
+}
+
+@keyframes float{
+0%{
+transform:translateY(0);
+}
+100%{
+transform:translateY(-120vh);
+}
+}
+
+@media(max-width:600px){
+
+h1{
+font-size:36px;
+}
+
+.message{
+font-size:18px;
+}
+
+.cake{
+font-size:70px;
+}
+
+button{
+font-size:18px;
+padding:12px 24px;
+}
+
+.balloon{
+width:50px;
+height:65px;
+}
+
+.balloon:before{
+left:24px;
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+
+<h1>🎉 Happy Birthday <span class="name">Friend!</span> 🎉</h1>
+
+<div class="cake">🎂</div>
+
+<p class="message">
+May your day be filled with joy, laughter,
+love and endless happiness.<br><br>
+
+Wishing you success, good health,
+and wonderful memories throughout the year! ❤️
+</p>
+
+<button onclick="celebrate()">
+🎁 Celebrate!
+</button>
+
+</div>
+
+<script>
+
+// Balloons
+
+const colors=[
+"#ff4d6d",
+"#ffd93d",
+"#6bcB77",
+"#4d96ff",
+"#ff9f1c",
+"#c77dff"
+];
+
+for(let i=0;i<12;i++){
+
+let b=document.createElement("div");
+
+b.className="balloon";
+
+b.style.left=Math.random()*100+"vw";
+
+b.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+b.style.animationDuration=(8+Math.random()*8)+"s";
+
+b.style.animationDelay=(-Math.random()*10)+"s";
+
+document.body.appendChild(b);
+
+}
+
+
+// Confetti
+
+const canvas=document.getElementById("confetti");
+
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+window.addEventListener("resize",()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+});
+
+const pieces=[];
+
+for(let i=0;i<250;i++){
+
+pieces.push({
+
+x:Math.random()*canvas.width,
+
+y:Math.random()*canvas.height-canvas.height,
+
+r:Math.random()*6+3,
+
+d:Math.random()*250,
+
+color:colors[Math.floor(Math.random()*colors.length)],
+
+tilt:Math.random()*10,
+
+speed:2+Math.random()*3
+
+});
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+pieces.forEach(p=>{
+
+ctx.beginPath();
+
+ctx.fillStyle=p.color;
+
+ctx.fillRect(p.x,p.y,p.r,p.r*2);
+
+});
+
+update();
+
+requestAnimationFrame(draw);
+
+}
+
+function update(){
+
+pieces.forEach(p=>{
+
+p.y+=p.speed;
+
+p.x+=Math.sin(p.d);
+
+if(p.y>canvas.height){
+
+p.y=-20;
+
+p.x=Math.random()*canvas.width;
+
+}
+
+});
+
+}
+
+draw();
+
+function celebrate(){
+
+alert("🎉 Happy Birthday! Have an amazing year ahead! 🎂🎁❤️");
+
+}
+
+</script>
+
+</body>
+</html>
